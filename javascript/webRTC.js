@@ -5,6 +5,8 @@ let pc;
 let localStream;
 let remoteStream = new MediaStream();
 let videoTransceiver;
+let callActive = false; //true mientras hay una llamada en curso o sonando
+let callTimers = []; //intervalos de la llamada actual (estado e ICE)
 const notification_audio = new Audio('../assets/audio/call.wav');
 notification_audio.volume = 0.3;
 
@@ -41,18 +43,34 @@ async function initDeviceSelection() //inicializa los dispositvos
 }
 window.addEventListener('load', initDeviceSelection); //al cargar la pagina te pide permisos ejecutando la funcion initDeviceSelection()
 
-async function checkIncoming() //realiza un fetch a check_llamadas.php y comprueba que llega 
+async function checkIncoming() //realiza un fetch a check_llamadas.php y comprueba que llega
 {
-  try 
+  if (callActive) //si ya estas en una llamada no se muestran mas
+  {
+    return;
+  }
+
+  try
   {
     const res = await fetch(`../php/check_llamadas.php?id=${id_usuario_actual}`);
     const j = await res.json();
-    if (j.status === 'llamada') 
+    const pop = document.getElementById('popup-llamada');
+
+    if (j.status === 'llamada')
     {
-      notification_audio.play(); //hace que suene el audio de notificacion para las llamadas
-      mostrarPopupLlamada(j.username, j.id_emisor); //muestra el popup con el nombre y emisor del php
+      if (pop.style.display !== 'block') //solo suena y se construye el popup una vez
+      {
+        notification_audio.play().catch(() => {}); //hace que suene el audio de notificacion para las llamadas
+        mostrarPopupLlamada(j.username, j.id_emisor); //muestra el popup con el nombre y emisor del php
+      }
     }
-  } 
+    else if (pop.style.display === 'block') //el emisor ha colgado antes de que contestes
+    {
+      notification_audio.pause();
+      notification_audio.currentTime = 0;
+      pop.style.display = 'none';
+    }
+  }
   catch(e)
   {
     console.warn('checkIncoming fallo:', e); //warning por si falla
@@ -75,7 +93,7 @@ async function llamarAmigo(idReceptor) // funcion para llamar
   const j = await resp.json();
   if(j.status !== 'ok')
   {
-    return alert('Error: ' + j.msg);
+    return alert('Error: ' + (j.msg || 'no se pudo iniciar la llamada'));
   } 
   await iniciarLlamada(true);
 }
@@ -138,15 +156,30 @@ function mostrarPopupLlamada(username, idEmisor) //construccion del div popup + 
   pop.style.display='block'; //se muestra el div popup
 }
 
-function colgar() //cuelga la llamada
+function limpiarLlamada() //cierra la conexion, libera camara y micro y oculta la ui de la llamada
 {
-  if(pc) //si hay una conexion activa
+  callActive = false;
+  callTimers.forEach(t => clearInterval(t));
+  callTimers = [];
+
+  if (pc) //si hay una conexion activa
   {
     pc.close();
+    pc = null;
   }
 
-  //oculta la ui y hace el fetch a responder_llamada para cambiar el estado a finalizada
+  if (localStream) //apaga la camara y el microfono
+  {
+    localStream.getTracks().forEach(t => t.stop());
+    localStream = null;
+  }
+
   document.getElementById('call-ui').style.display = 'none';
+}
+
+function colgar() //cuelga la llamada
+{
+  //avisa a la otra parte cambiando el estado a finalizada
   fetch('../php/responder_llamada.php',{
     method:'POST', headers:{'Content-Type':'application/json'},
     body:JSON.stringify({
@@ -155,6 +188,8 @@ function colgar() //cuelga la llamada
       respuesta:'finalizada'
     })
   });
+
+  limpiarLlamada();
 }
 
 function toggleMute() //alterna entre mutearse y desmutearse
@@ -284,9 +319,10 @@ async function compartirPantalla() //funcion asincrona para compartir pantalla
 //esta funcion controla todo el flujo de webrtc añadiendo como parametro true o false si se acepta o rechaza la llamada
 async function iniciarLlamada(isCaller) 
 {
+  callActive = true;
   document.getElementById('call-ui').style.display = 'flex';
 
-  pc = new RTCPeerConnection({ iceServers: [{ urls: 'stun:stun.l.google.com:19302' }] }); //crea una nueva conexion RTC con un servidor STUN de Google
+  pc = new RTCPeerConnection({ iceServers: [{ urls: ['stun:stun.l.google.com:19302', 'stun:stun1.l.google.com:19302', 'stun:stun.cloudflare.com:3478'] }] }); //crea una nueva conexion RTC con un servidor STUN de Google
   remoteStream = new MediaStream(); // crea un nuevo MediaStream para el video remoto
 
   pc.onicecandidate = ev => { //maneja los candidatos ICE
@@ -298,6 +334,7 @@ async function iniciarLlamada(isCaller)
           id_emisor: callerId,
           id_receptor: calleeId,
           type: 'ice',
+          from: id_usuario_actual,
           data: ev.candidate
         })
       });
@@ -362,56 +399,67 @@ async function iniciarLlamada(isCaller)
   localStream.getTracks().forEach(t => pc.addTrack(t, localStream));
 
   // ---- Signalización estándar ----
-  if (isCaller) 
+  const base = `id_emisor=${callerId}&id_receptor=${calleeId}`;
+  const esperar = ms => new Promise(r => setTimeout(r, ms));
+
+  //vigila el estado de la llamada: si la otra parte cuelga o rechaza se cierra aqui tambien
+  callTimers.push(setInterval(async () => {
+    try
+    {
+      const res = await fetch(`../php/signaling.php?modo=estado&${base}`);
+      const { estado } = await res.json();
+
+      if (estado === 'finalizada' || estado === 'rechazada')
+      {
+        limpiarLlamada();
+        if (estado === 'rechazada' && isCaller)
+        {
+          alert('Llamada rechazada.');
+        }
+      }
+    }
+    catch (e) { }
+  }, 1000));
+
+  if (isCaller)
   {
     const off = await pc.createOffer();
     await pc.setLocalDescription(off);
     await fetch('../php/signaling.php', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        id_emisor: callerId,
-        id_receptor: calleeId,
-        type: 'offer',
-        data: off
-      })
+      body: JSON.stringify({ id_emisor: callerId, id_receptor: calleeId, type: 'offer', data: off })
     });
 
-    // Espera respuesta
+    // Espera respuesta (se corta si se cuelga o rechazan)
     let ans = null;
-    while (!ans) 
+    while (!ans && callActive)
     {
-      const res = await fetch(
-        `../php/signaling.php?modo=obtener&type=answer` +
-        `&id_emisor=${callerId}` +
-        `&id_receptor=${calleeId}`
-      );
+      const res = await fetch(`../php/signaling.php?modo=obtener&type=answer&${base}`);
       ans = (await res.json()).data;
-      if (!ans) 
+      if (!ans)
       {
-        await new Promise(r => setTimeout(r, 300)); 
+        await esperar(300);
       }
     }
+    if (!callActive) return;
     await pc.setRemoteDescription(new RTCSessionDescription(ans));
   }
-  else 
+  else
   {
     // receptor espera offer
     let of = null;
-    while (!of) 
+    while (!of && callActive)
     {
-      const res = await fetch(
-        `../php/signaling.php?modo=obtener&type=offer` +
-        `&id_emisor=${callerId}` +
-        `&id_receptor=${calleeId}`
-      );
+      const res = await fetch(`../php/signaling.php?modo=obtener&type=offer&${base}`);
       of = (await res.json()).data;
 
       if (!of)
       {
-        await new Promise(r => setTimeout(r, 300));
+        await esperar(300);
       }
     }
+    if (!callActive) return;
     await pc.setRemoteDescription(new RTCSessionDescription(of));
 
     // crear + enviar answer
@@ -420,33 +468,27 @@ async function iniciarLlamada(isCaller)
     await fetch('../php/signaling.php', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        id_emisor: callerId,
-        id_receptor: calleeId,
-        type: 'answer',
-        data: ans
-      })
+      body: JSON.stringify({ id_emisor: callerId, id_receptor: calleeId, type: 'answer', data: ans })
     });
   }
 
-  // Polling ICE remoto significa que se añaden candidatos ICE remotos cada segundo hasta que se complete la conexión.
-  // Esto es necesario porque los candidatos ICE pueden llegar en cualquier momento.
-  setInterval(async () => {
-    //se hace un fetch a signaling.php para obtener los candidatos ICE
-    const res = await fetch( 
-      `../php/signaling.php?modo=obtener&type=ice` + `&id_emisor=${callerId}` + `&id_receptor=${calleeId}`
-    );
-    const arr = (await res.json()).data || []; // obtiene los candidatos ICE del servidor
-    const list = Array.isArray(arr) ? arr : [arr]; // asegura que sea un array
-    for (const c of list)  // recorre los candidatos ICE
+  // Polling ICE remoto: cada segundo se piden los candidatos de la otra parte y se añaden los nuevos.
+  // Los candidatos pueden llegar en cualquier momento, por eso se sigue consultando hasta que acabe la llamada.
+  let iceProcesados = 0;
+  callTimers.push(setInterval(async () => {
+    if (!pc) return;
+    try
     {
-      try 
-      { 
-        await pc.addIceCandidate(new RTCIceCandidate(c)); // añade el candidato ICE a la conexión
+      const res = await fetch(`../php/signaling.php?modo=obtener&type=ice&${base}&me=${id_usuario_actual}`);
+      const list = (await res.json()).data || [];
+
+      for (; iceProcesados < list.length; iceProcesados++)
+      {
+        await pc.addIceCandidate(new RTCIceCandidate(list[iceProcesados]));
       }
-      catch (e) { }
     }
-  }, 1000);
+    catch (e) { }
+  }, 1000));
 }
 
 //crea un canvas en negro y lo convierte en stream

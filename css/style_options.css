@@ -510,3 +510,14 @@
     gap: 10px;
     margin-bottom: 5px;
 }
+#exit_button_image
+{
+    opacity: 0.8;
+    transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+#exit_button_image:hover
+{
+    opacity: 1;
+    transform: scale(1.08);
+}

@@ -154,14 +154,43 @@ button.active
     position: absolute;
     width: 100%;
     max-width: 450px;
-    background-color: #890444;
     padding: 35px;
     border-radius: 10px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
     opacity: 0;
     visibility: hidden;
     transform: translateY(-20px);
     transition: opacity 0.5s ease, visibility 0.5s ease, transform 0.5s ease;
+}
+
+.menu::before,
+.menu::after
+{
+    content: '';
+    position: absolute;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+/* tarjeta principal */
+.menu::after
+{
+    inset: 0;
+    background-color: #890444;
+    z-index: -1;
+}
+
+/* tarjeta de fondo: sobresale igual por todos los lados */
+.menu::before
+{
+    inset: -10px;
+    background-color: #75033a;
+    z-index: -2;
+}
+
+/* los antiguos divs de fondo ya no se usan */
+#bg-login, #bg-registro, #bg-forgot
+{
+    display: none !important;
 }
 
 .menu.show 

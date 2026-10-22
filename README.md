@@ -78,7 +78,7 @@ http://localhost/chatterly
 
 ## Ejecutar sin XAMPP (versión actual)
 La app usa **SQLite** (PDO) en lugar de MySQL: ya no hace falta XAMPP. Ejecuta `iniciar.bat` (usa `php -S localhost:8000`) y la base de datos se crea sola en `data/`.
-Usuarios demo: `demo1` / `demo2`, contraseña `Demo!1`. También hay un botón **Entrar como usuario** (invitado). `db.sql` es el esquema MySQL original, solo de referencia.
+Usuarios demo: `demo1` / `demo2`, contraseña `Demo!1`. También hay un botón **Entrar como invitado** (invitado). `db.sql` es el esquema MySQL original, solo de referencia.
 
 ## Demo en Vercel
 Web: https://chatterly-old.vercel.app (runtime comunitario `vercel-php`). Es una demo con limitaciones:

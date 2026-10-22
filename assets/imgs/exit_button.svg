@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 85" width="60" height="85">
+  <circle cx="30" cy="30" r="24" fill="none" stroke="#b5bac1" stroke-width="3"/>
+  <path d="M21 21 L39 39 M39 21 L21 39" stroke="#b5bac1" stroke-width="3.5" stroke-linecap="round"/>
+  <text x="30" y="75" text-anchor="middle" font-family="'Segoe UI', Arial, sans-serif" font-size="15" font-weight="700" letter-spacing="1.5" fill="#b5bac1">ESC</text>
+</svg>

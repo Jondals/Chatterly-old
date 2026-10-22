@@ -35,7 +35,7 @@ $id_usuario_actual = get_id_user($pdo, $usuario)
                 <div class="change_name">
                     <div class="container">
                         <p id="text_change_name">Cambiar nombre</p>
-                        <img id="exit_button_image" src="../assets/imgs/exit_button.png" alt="" onclick="closeeditname()">
+                        <img id="exit_button_image" src="../assets/imgs/exit_button.svg" alt="" onclick="closeeditname()">
                     </div>
                     <input type="text" name="new_name" id="new_name" placeholder="Nuevo nombre" required>
                     <button type="submit" class="accept-button" onclick="cambiar_alias()">Cambiar nombre</button>
@@ -51,7 +51,7 @@ $id_usuario_actual = get_id_user($pdo, $usuario)
                     <div class="change_username">
                         <div class="container">
                             <p id="text_change_username">Cambiar nombre de usuario</p>
-                            <img id="exit_button_image" src="../assets/imgs/exit_button.png" alt="" onclick="closeeditusername()">
+                            <img id="exit_button_image" src="../assets/imgs/exit_button.svg" alt="" onclick="closeeditusername()">
                         </div>
                         <input type="text" name="new_username" id="new_username" placeholder="Nuevo nombre de usuario" required>
                         <button type="submit" class="accept-button" onclick="cambiar_username()">Cambiar nombre de usuario</button>
@@ -67,7 +67,7 @@ $id_usuario_actual = get_id_user($pdo, $usuario)
                 <div class="change_email">
                     <div class="container">
                         <p id="text_change_email">Cambiar correo electronico</p>
-                        <img id="exit_button_image" src="../assets/imgs/exit_button.png" alt="" onclick="closeeditemail()">
+                        <img id="exit_button_image" src="../assets/imgs/exit_button.svg" alt="" onclick="closeeditemail()">
                     </div>
                     <input type="email" name="new_email" id="new_email" placeholder="Nuevo correo electronico" required>
                     <button type="submit" class="accept-button" onclick="cambiar_email()">Cambiar correo electronico</button>
@@ -82,7 +82,7 @@ $id_usuario_actual = get_id_user($pdo, $usuario)
                 <div class="change_oldpassword">
                     <div class="container">
                         <p id="text_change_password">Cambiar contraseña</p>
-                        <img id="exit_button_image" src="../assets/imgs/exit_button.png" onclick="closechangepassword()">
+                        <img id="exit_button_image" src="../assets/imgs/exit_button.svg" onclick="closechangepassword()">
                     </div>
                     <input type="password" name="old_password" id="old_password" placeholder="Contraseña actual" required>
                     <input type="password" name="new_password" id="new_password" placeholder="Nueva contraseña" required>
@@ -98,7 +98,7 @@ $id_usuario_actual = get_id_user($pdo, $usuario)
             <div id="delete_account" class="delete_account">
                 <div class="container">
                     <p id="text_delete_account">Eliminar cuenta</p>
-                    <img id="exit_button_image" src="../assets/imgs/exit_button.png" onclick="closecdeleteaccount()">
+                    <img id="exit_button_image" src="../assets/imgs/exit_button.svg" onclick="closecdeleteaccount()">
                 </div>
                 <p id="text_delete_account2">¿Estas seguro de que deseas eliminar tu cuenta? Esta accion no se puede deshacer.</p>
                 <div class="container">
@@ -277,7 +277,7 @@ $id_usuario_actual = get_id_user($pdo, $usuario)
                         <div class="main-content">
                             <div class="container_options_header" id="container_options_header">
                                 <h1 id="myaccount_text">Mi cuenta</h1>
-                                <img id="exit_button_image" src="../assets/imgs/exit_button.png" alt="" onclick="closeoptionspanel()">
+                                <img id="exit_button_image" src="../assets/imgs/exit_button.svg" alt="" onclick="closeoptionspanel()">
                             </div>
                             <div id="profileinfo" class="profile-info" hidden>
                                 <?php render_profile_header($pdo, $usuario)?>
