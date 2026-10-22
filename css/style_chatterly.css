@@ -1,0 +1,727 @@
+/* ==== fuente y configuracion inicial  ==== */
+@font-face 
+{
+    font-family: 'newfont';
+    src: url('../assets/fonts/ggsansMedium.ttf') format('truetype');
+}
+
+@font-face 
+{
+    font-family: 'newfontBold';
+    src: url('../assets/fonts/ggsansBold.ttf') format('truetype');
+}
+
+html
+{
+    font-family: 'newfont', sans-serif;
+    -webkit-user-select: none;
+    -webkit-user-drag: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    overflow-x: hidden;
+}
+
+body 
+{
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: cover;
+    background: radial-gradient(ellipse 60% 40% at 70% 15%, #5421a8bb 0%, #24243c00 100%), radial-gradient(ellipse 30% 20% at 15% 85%, #e95fa577 0%, #24243c00 100%), radial-gradient(ellipse 35% 15% at 45% 60%, #ffb17433 0%, #24243c00 100%), linear-gradient(120deg, #181826 0%, #23243c 100%);
+    color: #e4e4e4;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+}
+
+img 
+{
+    -webkit-user-drag: none;
+    -moz-user-select: none;
+    -ms-user-select: none; 
+    user-select: none; 
+}
+
+h1 
+{
+    font-family: 'newfontBold', sans-serif;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+label 
+{
+    font-weight: normal;
+    margin-bottom: 5px;
+}
+
+input[type = "text"], input[type = "password"], input[type = "date"], input[type = "submit"], input[type = "email"]
+{
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #1e1e1e;
+    border-radius: 6px;
+    background-color: #1e1e1e;
+    color: #e4e4e4;
+    font-size: 15px;
+    transition: border-color 0.3s ease;
+}
+
+input:focus 
+{
+    outline: none;
+}
+
+button 
+{
+    width: 100%;
+    padding: 15px;
+    background-color: #5865f2;
+    color: #ffffff;
+    border: none;
+    border-radius: 6px;
+    font-family: 'newfont', sans-serif;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+button:hover 
+{
+    background-color: #6d58a8;
+    transform: scale(1.02);
+}
+
+button.active 
+{
+    background-color: #404249;
+    color: #ffffff;
+}
+
+/* ==== barra superior ==== */
+
+#chatterly-container
+{
+    display: flex; 
+    flex-direction: column; 
+    width: 100vw; 
+    height: 100vh;
+}
+
+#barra-superior
+{
+    display: flex;
+    background: linear-gradient(360deg, #21142a 0%, #170e1e 50%);
+    color: white; 
+    padding: 5px; 
+    text-align: left; 
+    height: 60px;
+    border-bottom: 2px solid var(--color-accent-1);
+}
+
+#barra-superior-buttons
+{
+    display: flex; 
+    padding: 5px; 
+    align-items: center; 
+    color: white; 
+    gap: 20px;
+}
+
+#chatterly-text
+{
+    font-weight: bold; 
+    color: #949ba4;
+}
+
+#chatterly-logo
+{
+    width: 60px;
+    height: 60px;
+}
+
+#divisor-barra-superior-buttons
+{
+    height: 2px;
+    padding-left: 10px;
+    padding-right: 10px;
+    margin-top: 5px;
+    width: 40px; 
+    background-color:rgb(255, 255, 255)
+}
+
+#message-logo
+{
+    position: relative;
+    background: linear-gradient(135deg, #ffb174 0%, #e95fa5 100%);
+    border-radius: 50%;
+    box-shadow: 0 2px 10px 0 #ffb17428;
+    width: 50px;       
+    height: 50px;      
+    display: flex;     
+    cursor: pointer; 
+    align-items: center;
+    justify-content: center;
+    transition: background 0.3s ease, border-radius 0.3s ease;
+}
+
+#message-logo:hover 
+{
+    background: linear-gradient(135deg, #e95fa5 0%, #ffb174 100%);
+    filter: brightness(1.07);
+    border-radius: 16px;
+}
+
+/* ==== En linea, Todos, Pediente y Añadir amigo (botones) ==== */
+
+.friend-tab-button 
+{
+    background-color: #31333800;
+    color: white;
+    border: none;
+    width: auto;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    padding: 8px 0px;
+    border-radius: 5px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.friend-tab-button:hover 
+{
+    background-color: #31333800;
+}
+
+#friend-tab-button:active 
+{
+    background-color: #31333800;
+}
+
+/* ==== barra 1 ==== */
+
+#barras-container
+{
+    display: flex; 
+    flex: 1;
+}
+
+#barra1
+{
+    width: 2.7vw; 
+    padding: 10px; 
+    color: white; 
+    min-width: 50px;
+    background: linear-gradient(180deg, #21142a 0%, #170e1e 50%);
+    border-right: 2px solid var(--color-accent-2);
+}
+
+/* ==== message logo y message (circulos)  ==== */
+
+#message 
+{
+    position: relative;
+    background: linear-gradient(135deg, #ffab98 0%, #f774ff 40%, #6be3ff 100%);
+    box-shadow: 0 2px 10px 0 #44e3ff28;
+    border-radius: 50%;
+    width: 30px; 
+    height: 30px;   
+    display: flex;     
+    align-items: center;
+    justify-content: center;
+    cursor: pointer; 
+    transition: background 0.3s ease, border-radius 0.3s ease, filter 0.13s;
+    padding: 10px; 
+}
+
+#message:hover 
+{
+    filter: brightness(1.09) saturate(1.13);
+    background: linear-gradient(135deg, #6be3ff 0%, #f774ff 50%, #ffab98 100%);
+    transition: background-color 0.3s ease, border-radius 0.3s ease;
+    border-radius: 16px;
+}
+
+/* ==== barra 2 ==== */
+
+#barra2
+{
+    width: 14%; 
+    color: white; 
+    min-width: 217px;
+    background: linear-gradient(180deg, #2a2033 0%, #553366 70%, #34213c 100%);
+    border-right: 2px solid var(--color-accent-3);
+    border-bottom: 2px solid var(--color-accent-3);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+    border-radius: 5px;
+    margin-left: 10px;
+    margin-bottom: 10px;
+    margin-top: 10px;
+}
+
+#barra2-content-container
+{
+    display: flex; 
+    flex-direction: column; 
+    justify-content: 
+    space-between;
+    height: 100%;
+    border-radius: 5px;
+
+}
+
+#direct_message_containter
+{
+    padding: 10px;
+}
+
+.option-button-close-chat
+{
+    text-align: center; 
+    display: flex;
+    align-items: center;
+}
+
+
+/* ==== userpanel ==== */
+
+#userpanel
+{
+    display: flex; 
+    align-items: center; 
+    gap: 10px; 
+    padding: 10px; 
+    background: linear-gradient(90deg, #28223b 0%, #2c1846 100%);
+    backdrop-filter: blur(8px);
+    border: 2px solid var(--color-accent-1);
+    box-shadow: 1px 0px 5px rgba(0, 0, 0, 0.5);
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+    z-index: 1;
+}
+
+
+/* ==== initialpanel ==== */
+
+#initialpanel
+{
+    flex: 1; display: flex; 
+    flex-direction: column; 
+    background: linear-gradient(180deg, #23233b 0%, #191929 100%);
+    border-right: 2px solid var(--color-accent-1);
+    border-bottom: 2px solid var(--color-accent-1);
+    border-left: 2px solid var(--color-accent-1);
+    box-shadow: 0px 4px 10px 3px rgba(0, 0, 0, 0.5);
+    border-radius: 5px;
+    margin: 10px;
+}
+
+.title-container
+{
+    color: #ffb174;
+    font-family: 'newfontBold', sans-serif;
+    font-size: 25px;
+    background: linear-gradient(360deg, #472137 0%, #3c1630 100%);
+    padding: 10px;
+    margin: -30px;
+    margin-bottom: 30px;
+    width: auto;
+    height: 40px;
+    align-content: center;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+}
+
+#separator
+{
+    margin: -30px;
+    margin-bottom: 30px;
+    width: auto;
+    height: 2px;
+    background-color: #123b5c;
+    z-index: 10;
+}
+
+/* ==== openonlinemenu ==== */
+
+#openonlinemenu
+{
+    padding: 30px; 
+}
+
+#button_name
+{
+    display: flex; 
+    align-items: center;
+    background: linear-gradient(90deg, #262844 0%, #23253a 100%);
+    border: 1.5px solid #353765;
+    gap: 10px; 
+    padding: 20px; 
+    padding-left: 10px;
+    width: 100%; 
+    margin-bottom: 15px;
+}
+
+#button_name:hover
+{
+    transform: scale(1.0);
+    border-color: #726cfb;
+    box-shadow: 0 0 0 2px #726cfb33;
+}
+
+#nombreboton
+{
+    font-size: 16px; 
+    color: white !important;
+}
+
+#fotoFriend
+{
+    width: 30px; 
+    height: 30px; 
+    border-radius: 50%;
+}
+
+#no_friends
+{
+    text-align: center;
+}
+
+/* ==== addfriendmenu ==== */
+
+#addfriendmenu
+{
+    padding: 30px; 
+}
+
+#addfriendmenu-container
+{
+    display: flex; 
+    overflow: hidden;
+}
+
+#addfriendmenu-form
+{
+    width: 100%; position: relative;
+}
+
+#alias_amigo
+{
+    border: 1.5px solid #353765;
+    background: linear-gradient(90deg, #262844 0%, #23253a 100%);
+    width: 100%; box-sizing: 
+    border-box; height: 50px; 
+    padding-left: 10px; 
+    position: relative;
+}
+
+#alias_amigo:focus
+{
+    border-color: #726cfb;
+    box-shadow: 0 0 0 2px #726cfb33;
+}
+
+#alias_amigo::placeholder
+{
+    color: #8d92b8;
+}
+
+.accept-button
+{
+    background: linear-gradient(90deg, #726cfb 0%, #3e8dd9 100%);
+    transition: background 0.14s, color 0.10s, filter 0.14s;
+}
+
+.accept-button:hover
+{
+    background: linear-gradient(90deg, #3e8dd9 0%, #726cfb 100%);
+    filter: brightness(1.09);
+}
+
+.reject-button
+{
+    background: linear-gradient(90deg, #fd5d7d 0%, #ffb174 100%);
+    transition: background 0.14s, color 0.10s, filter 0.14s;
+}
+
+.reject-button:hover
+{
+        background: linear-gradient(90deg, #ffb174 0%, #fd5d7d 100%);
+    filter: brightness(1.07);
+}
+
+#enviar_solicitud
+{
+    width: 200px; 
+    position: absolute; 
+    right: 5px; 
+    top: 5px; 
+    height: 40px; 
+    font-size: 14px; 
+    cursor: pointer; 
+    padding: 0 15px; 
+    border: none;
+}
+
+#boton-solicitud
+{
+    height: 30px;
+    font-size: 14px;
+    border: none;
+    width: 130px;
+    align-items: center;
+    text-align: center;
+    justify-content: center;
+    display: flex;
+}
+
+/* ==== pendingmenu ==== */
+
+#pendingmenu
+{
+    padding: 30px; 
+}
+
+#pendingmenu-form
+{
+    display: flex; gap: 10px;
+}
+
+.solicitud
+{
+    display: flex; 
+    align-items: center; 
+    justify-content: space-between; 
+    padding: 10px; 
+    align-content: center;
+    border: 1.5px solid #353765;
+    background: linear-gradient(90deg, #262844 0%, #23253a 100%);
+    margin-bottom: 10px; 
+    border-radius: 5px;
+}
+
+#button_aceptar
+{
+    background-color: #5865F2; 
+    color: white; 
+    border: none; 
+    padding: 5px 10px; 
+    border-radius: 3px; 
+    cursor: pointer;
+}
+
+#button_rechazar
+{
+    background-color: #FF5C5C; 
+    color: white; 
+    border: none; 
+    padding: 5px 10px;
+    border-radius: 3px;
+    cursor: pointer;
+}
+
+/* ==== allfriends ==== */
+
+#allfriends
+{
+    padding: 30px; 
+}
+
+#allfriends-container
+{
+    display: flex; 
+    align-items: center; 
+    gap: 10px; 
+    padding: 5px;
+    padding-left: 10px;
+    border-radius: 5px;
+    background: linear-gradient(90deg, #262844 0%, #23253a 100%);
+    border: 1.5px solid #353765;
+    margin-bottom: 15px;
+}
+/* ==== opciones ==== */
+
+#options-button 
+{
+    background: linear-gradient(to top, #a7391400, #f2815b00);
+    font-family: 'newfont', sans-serif;
+    color: #ffffff; 
+    font-size: 14px; 
+    border: none; 
+    padding: 10px 15px; 
+    margin: 5px 0;
+    text-align: left;
+    cursor: pointer; 
+    border-radius: 3px;
+    transition: background-color 0.2s ease; 
+}
+
+#options-button:hover 
+{
+    background: linear-gradient(90deg, #5b4e86 0%, #603697 100%);
+}
+
+#options-button:active 
+{
+    background: linear-gradient(90deg, #5b4e86 0%, #603697 100%);
+}
+
+#options-button:focus 
+{
+    outline: none; 
+    background: linear-gradient(90deg, #5b4e86 0%, #603697 100%);
+}
+
+/* ==== form y panel button ==== */
+
+#form-container
+{
+    background-color: #34343c;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.5);
+    max-width: 400px;
+    width: 100%;
+    display: none;
+}
+
+#form-container.active 
+{
+    display: block;
+}
+
+/* ==== botones ==== */
+
+.panel_button
+{
+    display: flex; 
+    align-items: center; 
+    background: linear-gradient(90deg, #28223b 0%, #2c1846 100%);
+    gap: 5px; 
+    padding: 5px 10px; 
+    max-width: 1350px; 
+    cursor: pointer;
+}
+
+.panel_button:hover
+{
+    background: linear-gradient(90deg, #123b5c 0%, #0a375c 100%);
+}
+
+#options_button_gear
+{
+    transition: background 0.4s ease-in-out;
+    width: 40px; 
+    height: 40px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 5px; 
+}
+
+#options_button_gear:hover 
+{
+    transition: background 0.4s ease-in-out;
+    background-color: #123b5c; 
+}
+
+#options_icon 
+{
+    transition: transform 0.5s ease-in-out;
+    width: 20px;
+    height: 20px;
+}
+
+#options_button_gear:hover #options_icon 
+{
+    transform: rotate(180deg);
+}
+
+
+/* ==== links y scrollbar ==== */
+
+#link
+{
+    color: #ffb174;
+    text-decoration: none;
+    position: relative;
+}
+
+#link::after
+{
+    content: '';
+    position: absolute;
+    height: 2px;
+    bottom: 0;
+    left: 50%;
+    background-color: #fca969;
+    visibility: hidden;
+    transform: translateX(-50%) scaleX(0);
+    transition: all 0.3s ease-in-out;
+    width: 100%;
+}
+
+#link:hover::after
+{
+    visibility: visible;
+    transform: translateX(-50%) scaleX(1);
+}
+
+#link-top
+{
+    color: #ffb174;
+    text-decoration: none;
+    position: relative;
+}
+
+#link-top::after 
+{
+  content: '';
+  position: absolute;
+  height: 2px;
+  bottom: 0;
+  left: 50%;
+  background-color: #ffb174;
+  visibility: hidden;
+  transform: translateX(-50%) scaleX(0);
+  transition: all 0.3s ease-in-out;
+  width: 100%;
+}
+
+#link-top:hover::after 
+{
+  visibility: visible;
+  transform: translateX(-50%) scaleX(1);
+}
+
+#link-top.active::after, #link-top:focus::after 
+{
+  visibility: visible;
+  transform: translateX(-50%) scaleX(1);
+}
+
+#top-separator
+{
+    color: #fb9a4f;
+}
+
+::-webkit-scrollbar
+{
+    width: 5px; 
+}
+
+::-webkit-scrollbar-track
+{
+    background-color: #2b2d31; 
+}
+
+::-webkit-scrollbar-thumb
+{
+    background-color: #1a1b1e; 
+    border-radius: 15px; 
+}

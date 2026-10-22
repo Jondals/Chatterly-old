@@ -1,0 +1,10 @@
+{
+  "functions": {
+    "api/index.php": { "runtime": "vercel-php@0.7.3", "includeFiles": "php/**" }
+  },
+  "routes": [
+    { "src": "/", "dest": "/html/login.html" },
+    { "src": "/php/([^/]+[.]php)", "dest": "/api/index.php?f=$1" },
+    { "handle": "filesystem" }
+  ]
+}
